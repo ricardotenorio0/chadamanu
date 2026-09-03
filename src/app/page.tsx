@@ -1,204 +1,317 @@
-import type { CSSProperties } from "react";
-
 import { Countdown } from "@/components/Countdown";
-import { Decor, type DecorItem } from "@/components/Decor";
-import { ArrowRight, Diamond } from "@/components/Ornaments";
+import { Aura, Sparkles, type SparkleSpot } from "@/components/Decor";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  CalendarIcon,
+  CheckIcon,
+  ClockIcon,
+  HeartIcon,
+  PinIcon,
+  Sparkle,
+  Swash,
+} from "@/components/Icons";
 import { Reveal } from "@/components/Reveal";
 import { RsvpForm } from "@/components/RsvpForm";
-import { EVENT, EVENT_DATE_MS, MAPS_URL } from "@/lib/event";
+import { SiteNav } from "@/components/SiteNav";
+import { CALENDAR_URL, EVENT, EVENT_DATE_MS, MAPS_URL } from "@/lib/event";
 import "@/styles/invite.css";
 
-const NAME_LETTERS = EVENT.babyName.split("");
-
-const HERO_DECOR: DecorItem[] = [
-  { kind: "sprig", x: "-3%", y: "-4%", size: "4.5rem", opacity: 0.26, depth: 0.02, rotate: 12, still: true, delay: "2.6s" },
-  { kind: "sprig", x: "88%", y: "70%", size: "5rem", opacity: 0.2, depth: 0.03, rotate: -168, still: true, delay: "2.9s" },
-  { kind: "balloon", x: "-5%", y: "52%", size: "3.4rem", opacity: 0.5, depth: 0.03, duration: "13s", delay: "2.2s", color: "var(--blush)", rotate: -6 },
-  { kind: "balloon", x: "84%", y: "36%", size: "2.7rem", opacity: 0.42, depth: 0.05, duration: "16s", delay: "2.5s", color: "var(--nude)", rotate: 7 },
-  { kind: "butterfly", x: "9%", y: "20%", size: "2.7rem", opacity: 0.34, depth: 0.06, duration: "19s", beat: "5s", delay: "1.9s", rotate: -8 },
-  { kind: "butterfly", x: "76%", y: "13%", size: "3.4rem", opacity: 0.26, depth: 0.09, duration: "24s", beat: "6.5s", delay: "2.3s", rotate: 12 },
-  { kind: "butterfly", x: "66%", y: "76%", size: "1.9rem", opacity: 0.22, depth: 0.07, duration: "21s", beat: "4.5s", delay: "2.7s", rotate: 18 },
+const HERO_SPARKLES: SparkleSpot[] = [
+  { x: "8%", y: "18%", size: "0.9rem", delay: "0.4s", duration: "7s" },
+  { x: "86%", y: "26%", size: "1.3rem", delay: "1.6s", duration: "8.5s", tone: "honey" },
+  { x: "72%", y: "72%", size: "0.75rem", delay: "2.4s", duration: "6.5s", tone: "lilac" },
+  { x: "16%", y: "76%", size: "1.05rem", delay: "3.1s", duration: "9s" },
 ];
 
-const COUNTDOWN_DECOR: DecorItem[] = [
-  { kind: "butterfly", x: "6%", y: "16%", size: "2rem", opacity: 0.2, depth: 0.08, duration: "22s", beat: "6s" },
-  { kind: "sprig", x: "90%", y: "22%", size: "4rem", opacity: 0.18, depth: 0.04, rotate: -14, still: true },
+const LETTER_SPARKLES: SparkleSpot[] = [
+  { x: "10%", y: "22%", size: "1.15rem", delay: "1.1s", duration: "8s" },
+  { x: "88%", y: "70%", size: "0.85rem", delay: "2.6s", duration: "7.5s", tone: "lilac" },
 ];
 
-const DETAILS_DECOR: DecorItem[] = [
-  { kind: "balloon", x: "86%", y: "8%", size: "2.4rem", opacity: 0.34, depth: 0.05, duration: "15s", color: "var(--blush)", rotate: 8 },
-  { kind: "butterfly", x: "4%", y: "62%", size: "2.3rem", opacity: 0.2, depth: 0.07, duration: "20s", beat: "5.5s", rotate: -14 },
+const RSVP_SPARKLES: SparkleSpot[] = [
+  { x: "6%", y: "12%", size: "1rem", delay: "0.8s", duration: "8s" },
+  { x: "91%", y: "64%", size: "0.8rem", delay: "2.2s", duration: "7s", tone: "honey" },
 ];
 
-const RSVP_DECOR: DecorItem[] = [
-  { kind: "sprig", x: "-4%", y: "10%", size: "4.6rem", opacity: 0.2, depth: 0.03, rotate: 10, still: true },
-  { kind: "butterfly", x: "85%", y: "8%", size: "2.6rem", opacity: 0.24, depth: 0.08, duration: "23s", beat: "5.5s", rotate: 10 },
+const GUARANTEES = [
+  "Leva menos de um minuto",
+  "Pode atualizar depois",
+  "Só pedimos o essencial",
 ];
 
 export default function InvitePage() {
   return (
-    <main>
-      {/* ---------------------------------------------------------------- */}
-      <header className="hero">
-        <Decor items={HERO_DECOR} />
+    <>
+      <SiteNav />
 
-        <div className="hero__inner">
-          <p className="eyebrow hero__eyebrow">Chá de Bebê</p>
+      <main id="conteudo">
+        {/* ================================================== ABERTURA ==== */}
+        <section className="hero" id="topo">
+          <Aura variant="hero" />
+          <Sparkles spots={HERO_SPARKLES} />
 
-          <div className="rule hero__rule">
-            <span />
-          </div>
+          <div className="shell hero__inner">
+            <span className="badge hero__badge">
+              <span className="badge__dot" aria-hidden="true" />
+              Chá de bebê · {EVENT.weekdayLabel}, {EVENT.dateLabel}
+            </span>
 
-          <h1 className="hero__name" aria-label={EVENT.babyName}>
-            {NAME_LETTERS.map((letter, index) => (
-              <span
-                key={`${letter}-${index}`}
-                className="hero__letter"
-                style={{ "--i": index } as CSSProperties}
-                aria-hidden="true"
-              >
-                {letter}
+            <h1 className="hero__title">
+              <span className="hero__title-line">Um amor pequenininho</span>
+              <span className="hero__title-line">está chegando:</span>
+              <span className="hero__name script">
+                {EVENT.babyName}
+                <Swash className="hero__swash" />
               </span>
-            ))}
-          </h1>
+            </h1>
 
-          <div className="rule hero__rule">
-            <span />
-          </div>
+            <p className="hero__lede lede">
+              Antes do primeiro abraço, queremos dividir com você a alegria que já não cabe
+              mais no peito. Venha celebrar a chegada da Manuela com a gente.
+            </p>
 
-          <p className="hero__tagline">{EVENT.tagline}</p>
-
-          <p className="hero__meta">
-            <span>10 · 10 · 2026</span>
-            <i aria-hidden="true" />
-            <span>14h30</span>
-          </p>
-        </div>
-
-        <a className="hero__scroll" href="#contagem" aria-label="Ver os detalhes do convite">
-          <span aria-hidden="true" />
-          Role
-        </a>
-      </header>
-
-      {/* ---------------------------------------------------------------- */}
-      <section className="section section--tinted" id="contagem" aria-labelledby="contagem-titulo">
-        <Decor items={COUNTDOWN_DECOR} />
-        <div className="shell">
-          <Reveal>
-            <div className="section__head">
-              <p className="eyebrow">Faltam</p>
-              <h2 className="section-title" id="contagem-titulo">
-                Para o grande dia
-              </h2>
+            <div className="hero__actions">
+              <a className="btn btn--lg" href="#presenca">
+                <span>Confirmar presença</span>
+                <span className="btn__icon" aria-hidden="true">
+                  <HeartIcon />
+                </span>
+              </a>
+              <a className="btn btn--lg btn--ghost" href="#detalhes">
+                <span>Ver os detalhes</span>
+                <span className="btn__icon" aria-hidden="true">
+                  <ArrowRight />
+                </span>
+              </a>
             </div>
-          </Reveal>
 
-          <Reveal delay={120}>
-            <Countdown target={EVENT_DATE_MS} />
-          </Reveal>
-        </div>
-      </section>
+            {/* Cartão-resumo: tudo o que o convidado precisa saber em um olhar. */}
+            <div className="hero__card">
+              <p className="hero__card-label">
+                <Sparkle className="hero__card-spark" />
+                O convite em um olhar
+              </p>
 
-      {/* ---------------------------------------------------------------- */}
-      <section className="section" id="evento" aria-labelledby="evento-titulo">
-        <Decor items={DETAILS_DECOR} />
-        <div className="shell">
-          <h2 className="sr-only" id="evento-titulo">
-            Data, horário e local
-          </h2>
+              <dl className="facts">
+                <div className="facts__item">
+                  <span className="icon-chip" aria-hidden="true">
+                    <CalendarIcon />
+                  </span>
+                  <div>
+                    <dt className="facts__label">Data</dt>
+                    <dd className="facts__value">{EVENT.dateFull}</dd>
+                  </div>
+                </div>
 
-          <div className="details">
-            <Reveal>
-              <div className="detail">
-                <p className="eyebrow detail__label">Quando</p>
-                <p className="detail__value">{EVENT.dateLabel}</p>
-                <p className="detail__support">
-                  {EVENT.weekdayLabel} · {EVENT.timeLabel}
-                </p>
-              </div>
+                <div className="facts__item">
+                  <span className="icon-chip icon-chip--honey" aria-hidden="true">
+                    <ClockIcon />
+                  </span>
+                  <div>
+                    <dt className="facts__label">Horário</dt>
+                    <dd className="facts__value">
+                      {EVENT.timeLabel} · {EVENT.weekdayLabel}
+                    </dd>
+                  </div>
+                </div>
+
+                <div className="facts__item">
+                  <span className="icon-chip icon-chip--lilac" aria-hidden="true">
+                    <PinIcon />
+                  </span>
+                  <div>
+                    <dt className="facts__label">Local</dt>
+                    <dd className="facts__value">{EVENT.venue}</dd>
+                  </div>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================ CONTAGEM ========== */}
+        <section className="band band--dark" id="contagem" aria-labelledby="contagem-titulo">
+          <div className="shell">
+            <Reveal className="band__head">
+              <p className="eyebrow eyebrow--on-dark">Contagem regressiva</p>
+              <h2 className="title-xl" id="contagem-titulo">
+                Falta pouco para o <span className="script band__title-accent">primeiro abraço</span>
+              </h2>
             </Reveal>
 
-            <Reveal delay={100}>
-              <div className="detail__divider" />
+            <Reveal delay={120}>
+              <Countdown target={EVENT_DATE_MS} />
             </Reveal>
 
-            <Reveal delay={160}>
-              <div className="detail">
-                <p className="eyebrow detail__label">Onde</p>
-                <p className="detail__value">{EVENT.venue}</p>
-                <p className="detail__address">{EVENT.address}</p>
-                <div className="detail__action">
+            <Reveal delay={200} className="band__foot">
+              <p className="band__note">
+                Salve a data para não perder nada — a gente já está contando os dias.
+              </p>
+              <a
+                className="btn btn--on-dark"
+                href={CALENDAR_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>Adicionar ao calendário</span>
+                <span className="btn__icon" aria-hidden="true">
+                  <ArrowUpRight />
+                </span>
+              </a>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ============================================ DETALHES ========== */}
+        <section className="section" id="detalhes" aria-labelledby="detalhes-titulo">
+          <div className="shell">
+            <Reveal className="section__head">
+              <p className="eyebrow">O grande dia</p>
+              <h2 className="title-xl" id="detalhes-titulo">
+                Onde e quando a gente se encontra
+              </h2>
+              <p className="lede section__lede">
+                Anote tudo com carinho: é uma tarde só de celebrar a Manuela.
+              </p>
+            </Reveal>
+
+            <div className="detail-grid">
+              <Reveal delay={80}>
+                <article className="card card--lift detail-card">
+                  <span className="icon-chip" aria-hidden="true">
+                    <CalendarIcon />
+                  </span>
+                  <h3 className="detail-card__title title-md">Quando</h3>
+                  <p className="detail-card__value script">{EVENT.dateLabel}</p>
+                  <p className="detail-card__support">
+                    {EVENT.weekdayLabel}, às {EVENT.timeLabel}
+                  </p>
+                  <ul className="detail-card__list">
+                    <li>Recepção a partir do horário marcado</li>
+                    <li>Traga a família e o bom humor</li>
+                  </ul>
+                </article>
+              </Reveal>
+
+              <Reveal delay={160}>
+                <article className="card card--lift detail-card">
+                  <span className="icon-chip icon-chip--lilac" aria-hidden="true">
+                    <PinIcon />
+                  </span>
+                  <h3 className="detail-card__title title-md">Onde</h3>
+                  <p className="detail-card__value script">{EVENT.venue}</p>
+                  <p className="detail-card__support">{EVENT.address}</p>
                   <a
-                    className="btn"
+                    className="btn btn--ghost btn--sm detail-card__cta"
                     href={MAPS_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <span>Como chegar</span>
-                    <span className="btn__icon">
-                      <ArrowRight />
+                    <span className="btn__icon" aria-hidden="true">
+                      <ArrowUpRight />
                     </span>
                   </a>
+                </article>
+              </Reveal>
+            </div>
+
+            <Reveal delay={220}>
+              <div className="callout">
+                <div className="callout__text">
+                  <p className="callout__title title-md">A sua presença é o presente</p>
+                  <p className="callout__sub">
+                    Confirme para a gente organizar os lugares e receber você do jeito certo.
+                  </p>
                 </div>
+                <a className="btn" href="#presenca">
+                  <span>Confirmar agora</span>
+                  <span className="btn__icon" aria-hidden="true">
+                    <ArrowRight />
+                  </span>
+                </a>
               </div>
             </Reveal>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ---------------------------------------------------------------- */}
-      <section className="section section--tinted" id="mensagem" aria-labelledby="mensagem-titulo">
-        <div className="shell shell--narrow message">
-          <Reveal>
-            <span className="message__mark">
-              <Diamond />
-            </span>
-            <h2 className="sr-only" id="mensagem-titulo">
-              Uma mensagem
-            </h2>
-            <p className="message__text">
-              Depois de tanta espera, a Manuela já ocupa todo o nosso pensamento. Antes do primeiro
-              abraço, queremos dividir com você a alegria que não cabe mais no peito.
-            </p>
-          </Reveal>
+        {/* ============================================== RECADO ========== */}
+        <section className="band band--soft" id="recado" aria-labelledby="recado-titulo">
+          <Sparkles spots={LETTER_SPARKLES} />
 
-          <Reveal delay={140}>
-            <p className="script message__signature">com todo o nosso amor</p>
-            <p className="message__parents">Família da Manuela</p>
-          </Reveal>
-        </div>
-      </section>
+          <div className="shell">
+            <Reveal>
+              <figure className="letter">
+                <span className="letter__quote script" aria-hidden="true">
+                  &ldquo;
+                </span>
+                <h2 className="sr-only" id="recado-titulo">
+                  Um recado da família
+                </h2>
+                <blockquote className="letter__text">
+                  Depois de tanta espera, a Manuela já ocupa todo o nosso pensamento. Cada
+                  detalhe desta tarde foi pensado para receber quem caminhou com a gente
+                  até aqui.
+                </blockquote>
+                <figcaption className="letter__sign">
+                  <span className="letter__sign-script script">com todo o nosso amor</span>
+                  <span className="letter__sign-name">Família da Manuela</span>
+                </figcaption>
+              </figure>
+            </Reveal>
+          </div>
+        </section>
 
-      {/* ---------------------------------------------------------------- */}
-      <section className="section" id="presenca" aria-labelledby="presenca-titulo">
-        <Decor items={RSVP_DECOR} />
-        <div className="shell shell--narrow">
-          <Reveal>
-            <div className="section__head">
-              <p className="eyebrow">Confirmação de presença</p>
-              <h2 className="section-title" id="presenca-titulo">
-                Você vem celebrar com a gente?
+        {/* ============================================ PRESENÇA ========== */}
+        <section className="section section--rsvp" id="presenca" aria-labelledby="presenca-titulo">
+          <Aura variant="soft" />
+          <Sparkles spots={RSVP_SPARKLES} />
+
+          <div className="shell shell--narrow">
+            <Reveal className="section__head section__head--center">
+              <p className="eyebrow eyebrow--center">Confirmação de presença</p>
+              <h2 className="title-xl" id="presenca-titulo">
+                Você vem celebrar <span className="script">com a gente?</span>
               </h2>
-            </div>
-          </Reveal>
+              <p className="lede section__lede">
+                Preencha em um minutinho. Assim guardamos o seu lugar — e o de quem vier
+                com você.
+              </p>
+            </Reveal>
 
-          <Reveal delay={120}>
-            <RsvpForm />
-          </Reveal>
-        </div>
-      </section>
+            <Reveal delay={120}>
+              <RsvpForm />
+            </Reveal>
 
-      {/* ---------------------------------------------------------------- */}
-      <footer className="site-footer">
-        <div className="rule">
-          <span />
-        </div>
-        <p className="site-footer__name">{EVENT.babyName}</p>
-        <p className="site-footer__meta">
-          {EVENT.shortDate} · {EVENT.venue}
-        </p>
-      </footer>
-    </main>
+            <Reveal delay={200}>
+              <ul className="guarantees">
+                {GUARANTEES.map((item) => (
+                  <li className="guarantees__item" key={item}>
+                    <span className="guarantees__mark" aria-hidden="true">
+                      <CheckIcon />
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ============================================== RODAPÉ ========== */}
+        <footer className="site-footer">
+          <div className="shell site-footer__inner">
+            <p className="site-footer__name script">{EVENT.babyName}</p>
+            <p className="site-footer__meta">
+              {EVENT.dateFull} · {EVENT.timeLabel} · {EVENT.venue}
+            </p>
+            <span className="site-footer__mark" aria-hidden="true">
+              <HeartIcon />
+            </span>
+          </div>
+        </footer>
+      </main>
+    </>
   );
 }

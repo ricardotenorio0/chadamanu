@@ -271,7 +271,7 @@ export function AdminDashboard() {
       <header className="admin-bar">
         <div className="admin-shell admin-bar__inner">
           <div className="admin-bar__brand">
-            <span className="admin-bar__name">Manuela</span>
+            <span className="admin-bar__name script">Manuela</span>
             <span className="admin-bar__tag">Confirmações</span>
           </div>
           <button type="button" className="ui-btn ui-btn--quiet" onClick={handleLogout}>

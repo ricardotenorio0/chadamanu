@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { LoginForm } from "@/components/admin/LoginForm";
-import { Butterfly } from "@/components/Ornaments";
+import { HeartIcon } from "@/components/Icons";
 import { requireAdmin } from "@/lib/api";
 import { isAdminConfigured } from "@/lib/auth";
 
@@ -18,10 +18,10 @@ export default async function AdminLoginPage() {
   return (
     <main className="login">
       <div className="login__panel">
-        <span className="login__mark">
-          <Butterfly beat="5s" />
+        <span className="login__mark" aria-hidden="true">
+          <HeartIcon />
         </span>
-        <p className="login__name">Manuela</p>
+        <p className="login__name script">Manuela</p>
         <p className="login__tag">Painel de confirmações</p>
 
         {configured ? (

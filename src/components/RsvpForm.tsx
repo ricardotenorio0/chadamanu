@@ -2,7 +2,7 @@
 
 import { useRef, useState, type FormEvent } from "react";
 
-import { Butterfly } from "@/components/Ornaments";
+import { AlertIcon, CheckIcon, HeartIcon, MinusIcon, PlusIcon } from "@/components/Icons";
 import { COMPANIONS_MAX, NOTE_MAX, validateRsvpInput } from "@/lib/rsvp-shared";
 
 type Status = "idle" | "submitting" | "success";
@@ -115,60 +115,66 @@ export function RsvpForm() {
   if (status === "success" && confirmation) {
     const people = confirmation.totalPeople;
     return (
-      <div className="rsvp__done" role="status" aria-live="polite">
-        <span className="rsvp__done-mark">
-          <Butterfly beat="4.5s" />
+      <div className="rsvp-card rsvp-done" role="status" aria-live="polite">
+        <span className="rsvp-done__mark" aria-hidden="true">
+          <CheckIcon />
         </span>
-        <h3 className="rsvp__done-title">
+
+        <h3 className="rsvp-done__title title-lg">
           {confirmation.alreadyRegistered ? "Confirmação atualizada" : "Presença confirmada"}
         </h3>
-        <p className="rsvp__done-name">{confirmation.name}</p>
-        <p className="rsvp__done-summary">
-          {people === 1 ? "1 pessoa" : `${people} pessoas`}
-          {confirmation.companions > 0
-            ? ` · ${confirmation.companions} ${confirmation.companions === 1 ? "acompanhante" : "acompanhantes"}`
-            : ""}
+
+        <p className="rsvp-done__name script">{confirmation.name}</p>
+
+        <div className="rsvp-done__chips">
+          <span className="badge">{people === 1 ? "1 pessoa" : `${people} pessoas`}</span>
+          {confirmation.companions > 0 ? (
+            <span className="badge badge--outline">
+              {confirmation.companions}{" "}
+              {confirmation.companions === 1 ? "acompanhante" : "acompanhantes"}
+            </span>
+          ) : null}
+        </div>
+
+        <p className="rsvp-done__text">
+          Que alegria receber você. Guardamos o seu lugar com todo o carinho.
         </p>
-        <p className="rsvp__done-text">
-          Que alegria receber você. Guardamos seu lugar com todo o carinho.
-        </p>
-        <button type="button" className="rsvp__done-reset" onClick={reset}>
-          Confirmar outro convidado
+
+        <button type="button" className="btn btn--ghost btn--sm" onClick={reset}>
+          <span>Confirmar outro convidado</span>
         </button>
       </div>
     );
   }
 
   const submitting = status === "submitting";
-  const companionsHelp = `Ate ${COMPANIONS_MAX} acompanhantes.`;
 
   return (
-    <form className="rsvp__form" onSubmit={handleSubmit} noValidate>
+    <form className="rsvp-card rsvp-form" onSubmit={handleSubmit} noValidate>
       <div className={`field${fieldError?.field === "name" ? " field--invalid" : ""}`}>
         <label className="field__label" htmlFor="rsvp-name">
-          Nome completo
+          Seu nome completo
         </label>
-        <div className="field__control">
-          <input
-            id="rsvp-name"
-            ref={nameInputRef}
-            className="field__input"
-            type="text"
-            name="name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            autoComplete="name"
-            enterKeyHint="next"
-            maxLength={80}
-            placeholder="Como devemos chamar você"
-            aria-invalid={fieldError?.field === "name"}
-            aria-describedby={fieldError?.field === "name" ? "rsvp-name-error" : undefined}
-            disabled={submitting}
-            required
-          />
-        </div>
+        <input
+          id="rsvp-name"
+          ref={nameInputRef}
+          className="field__input"
+          type="text"
+          name="name"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          autoComplete="name"
+          enterKeyHint="next"
+          maxLength={80}
+          placeholder="Como devemos chamar você"
+          aria-invalid={fieldError?.field === "name"}
+          aria-describedby={fieldError?.field === "name" ? "rsvp-name-error" : undefined}
+          disabled={submitting}
+          required
+        />
         {fieldError?.field === "name" ? (
           <span className="field__error" id="rsvp-name-error">
+            <AlertIcon />
             {fieldError.message}
           </span>
         ) : null}
@@ -176,7 +182,7 @@ export function RsvpForm() {
 
       <div className={`field${fieldError?.field === "companions" ? " field--invalid" : ""}`}>
         <label className="field__label" htmlFor="rsvp-companions">
-          Quantidade de acompanhantes
+          Quantos acompanhantes?
         </label>
         <div className="stepper">
           <button
@@ -186,28 +192,33 @@ export function RsvpForm() {
             disabled={submitting || companions <= 0}
             aria-label="Remover um acompanhante"
           >
-            <svg viewBox="0 0 14 2" width="14" height="2" aria-hidden="true">
-              <path d="M0 1h14" stroke="currentColor" strokeWidth="1" />
-            </svg>
+            <MinusIcon />
           </button>
-          <input
-            id="rsvp-companions"
-            className="stepper__input"
-            type="number"
-            inputMode="numeric"
-            name="companions"
-            min={0}
-            max={COMPANIONS_MAX}
-            step={1}
-            value={companions}
-            onChange={(event) => {
-              const parsed = Number(event.target.value);
-              if (Number.isNaN(parsed)) return setCompanions(0);
-              setCompanions(Math.min(COMPANIONS_MAX, Math.max(0, Math.floor(parsed))));
-            }}
-            disabled={submitting}
-            aria-describedby="rsvp-companions-help"
-          />
+
+          <span className="stepper__display">
+            <input
+              id="rsvp-companions"
+              className="stepper__input"
+              type="number"
+              inputMode="numeric"
+              name="companions"
+              min={0}
+              max={COMPANIONS_MAX}
+              step={1}
+              value={companions}
+              onChange={(event) => {
+                const parsed = Number(event.target.value);
+                if (Number.isNaN(parsed)) return setCompanions(0);
+                setCompanions(Math.min(COMPANIONS_MAX, Math.max(0, Math.floor(parsed))));
+              }}
+              disabled={submitting}
+              aria-describedby="rsvp-companions-help"
+            />
+            <span className="stepper__unit" aria-hidden="true">
+              {companions === 1 ? "pessoa" : "pessoas"}
+            </span>
+          </span>
+
           <button
             type="button"
             className="stepper__btn"
@@ -215,39 +226,40 @@ export function RsvpForm() {
             disabled={submitting || companions >= COMPANIONS_MAX}
             aria-label="Adicionar um acompanhante"
           >
-            <svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
-              <path d="M0 7h14M7 0v14" stroke="currentColor" strokeWidth="1" />
-            </svg>
+            <PlusIcon />
           </button>
         </div>
         <span className="field__hint" id="rsvp-companions-help">
-          {fieldError?.field === "companions" ? fieldError.message : companionsHelp}
+          {fieldError?.field === "companions"
+            ? fieldError.message
+            : `Além de você. Até ${COMPANIONS_MAX} acompanhantes.`}
         </span>
       </div>
 
       <div className={`field${fieldError?.field === "note" ? " field--invalid" : ""}`}>
         <label className="field__label" htmlFor="rsvp-note">
-          Recado para a Manuela <span aria-hidden="true">(opcional)</span>
+          Recado para a Manuela <span className="field__optional">(opcional)</span>
         </label>
-        <div className="field__control">
-          <textarea
-            id="rsvp-note"
-            className="field__textarea"
-            name="note"
-            value={note}
-            onChange={(event) => setNote(event.target.value)}
-            maxLength={NOTE_MAX}
-            rows={2}
-            placeholder="Deixe um carinho, se quiser"
-            disabled={submitting}
-          />
-        </div>
+        <textarea
+          id="rsvp-note"
+          className="field__textarea"
+          name="note"
+          value={note}
+          onChange={(event) => setNote(event.target.value)}
+          maxLength={NOTE_MAX}
+          rows={3}
+          placeholder="Deixe um carinho, se quiser"
+          disabled={submitting}
+        />
         {fieldError?.field === "note" ? (
-          <span className="field__error">{fieldError.message}</span>
+          <span className="field__error">
+            <AlertIcon />
+            {fieldError.message}
+          </span>
         ) : null}
       </div>
 
-      {/* Campo isca contra robos: invisivel e ignorado por leitores de tela. */}
+      {/* Campo isca contra robôs: invisível e ignorado por leitores de tela. */}
       <div className="sr-only" aria-hidden="true">
         <label htmlFor="rsvp-website">Não preencha este campo</label>
         <input
@@ -261,18 +273,21 @@ export function RsvpForm() {
       </div>
 
       {formError ? (
-        <p className="rsvp__alert" role="alert">
+        <p className="rsvp-form__alert" role="alert">
+          <AlertIcon />
           {formError}
         </p>
       ) : null}
 
-      <button type="submit" className="btn btn--solid rsvp__submit" disabled={submitting}>
+      <button type="submit" className="btn btn--lg btn--block" disabled={submitting}>
         <span>{submitting ? "Enviando" : "Confirmar presença"}</span>
-        {submitting ? <span className="spinner" aria-hidden="true" /> : null}
+        <span className="btn__icon" aria-hidden="true">
+          {submitting ? <span className="spinner" /> : <HeartIcon />}
+        </span>
       </button>
 
-      <p className="rsvp__legal">
-        Usamos suas informações apenas para organizar o cha de bebe.
+      <p className="rsvp-form__legal small muted">
+        Usamos suas informações apenas para organizar o chá de bebê.
       </p>
     </form>
   );

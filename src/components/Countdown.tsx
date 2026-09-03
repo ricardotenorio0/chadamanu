@@ -34,23 +34,28 @@ export function Countdown({ target }: { target: number }) {
   const arrived = remaining !== null && target - Date.now() <= 0;
 
   return (
-    <div>
-      <div className="countdown__grid" role="timer" aria-live="off">
-        {UNITS.map((unit) => {
+    <div className="countdown" role="timer" aria-live="off">
+      <ol className="countdown__grid">
+        {UNITS.map((unit, index) => {
           const value = remaining?.[unit.key];
           const text = value === undefined ? "--" : String(value).padStart(2, "0");
           return (
-            <div className="countdown__cell" key={unit.key}>
-              {/* A chave muda a cada tique e reinicia a animacao de entrada. */}
+            <li className="countdown__cell" key={unit.key} style={{ animationDelay: `${index * 70}ms` }}>
+              {/* A chave muda a cada tique e reinicia a animação de entrada. */}
               <span className="countdown__value" key={text}>
                 {text}
               </span>
               <span className="countdown__label">{unit.label}</span>
-            </div>
+            </li>
           );
         })}
-      </div>
-      {arrived ? <p className="countdown__note">O grande dia chegou.</p> : null}
+      </ol>
+
+      {arrived ? (
+        <p className="countdown__note">
+          <span className="badge badge--on-dark">O grande dia chegou</span>
+        </p>
+      ) : null}
     </div>
   );
 }

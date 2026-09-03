@@ -10,6 +10,10 @@ Construído para rodar na **Vercel** com banco **Neon PostgreSQL**.
 sem framework de UI. Sem servidor persistente, sem Docker, sem processos em
 background: tudo roda em funções serverless.
 
+**Design:** identidade em rosa pastel e neutros quentes, cartões arredondados e
+tipografia dupla — *Kissing Season* para nomes e palavras-chave, *Sora* para
+toda a interface. Mobile first. Veja a seção 9.
+
 ---
 
 ## 1. Como conectar o Neon
@@ -218,6 +222,7 @@ src/app/               Rotas (convite, /admin e /api)
 src/components/        Componentes do convite e do painel
 src/lib/               Banco, autenticação, repositório e validações
 src/styles/            Estilos do convite e do painel
+public/fonts/          Local opcional da fonte decorativa (veja a seção 9)
 src/middleware.ts      Proteção das rotas administrativas
 ```
 
@@ -230,5 +235,39 @@ horário, local, endereço e limite de acompanhantes. O link do Google Maps é
 montado a partir do local e do endereço. A data usada pela contagem regressiva
 pode ser trocada sem alterar código, pela variável `NEXT_PUBLIC_EVENT_DATE`.
 
-Paleta e tipografia estão centralizadas nas variáveis CSS de
-`src/app/globals.css`.
+A duração usada no botão *Adicionar ao calendário* vem de `durationHours`, no
+mesmo arquivo — só o convite de agenda usa esse valor.
+
+### Sistema de design
+
+Todos os tokens ficam em `src/app/globals.css`, no bloco `:root`, e valem tanto
+para o convite quanto para o painel:
+
+| Grupo | Tokens | Para que serve |
+| --- | --- | --- |
+| Superfícies | `--c-bg`, `--c-card`, `--c-card-soft`, `--c-card-tint`, `--c-dark` | Fundos de página, cartões e faixas escuras |
+| Tinta | `--c-ink`, `--c-ink-2`, `--c-ink-3`, `--c-on-dark` | Hierarquia de texto |
+| Acento | `--c-accent`, `--c-accent-strong`, `--c-accent-ink`, `--c-accent-soft` | CTAs, selos, estados e destaques |
+| Apoio | `--c-honey`, `--c-lilac`, `--c-mint` | Doses pequenas: ícones, selos e confirmação |
+| Forma | `--r-xs` … `--r-2xl`, `--r-pill` | Raios padronizados |
+| Profundidade | `--sh-xs` … `--sh-lg`, `--sh-cta` | Sombras sempre rosadas, nunca cinzas |
+| Ritmo | `--sp-1` … `--sp-20`, `--gutter`, `--section-y` | Espaçamentos |
+| Movimento | `--ease`, `--ease-out`, `--t-fast`, `--t-mid`, `--t-slow` | Transições e animações |
+
+As peças reutilizáveis (`.btn`, `.card`, `.badge`, `.icon-chip`, `.field`,
+`.eyebrow`, `.reveal`) também vivem em `globals.css`. `src/styles/invite.css`
+cuida da composição das seções e `src/styles/admin.css`, do painel.
+
+Toda animação respeita `prefers-reduced-motion`.
+
+### A fonte Kissing Season
+
+A fonte decorativa é declarada por `@font-face` em `src/app/globals.css` e é
+carregada de <https://manu.cuptickers.online/Kissing%20Season.ttf>.
+
+Para servi-la pela própria origem — o que evita uma conexão externa e o risco
+de o arquivo sair do ar — basta salvar o arquivo como
+`public/fonts/kissing-season.ttf`. A regra já tenta essa cópia local primeiro e
+só recorre à URL externa se ela não existir; nada além disso precisa mudar.
+
+A *Sora* vem do Google Fonts via `next/font`, otimizada em tempo de build.
