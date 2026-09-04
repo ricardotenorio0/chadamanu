@@ -212,7 +212,9 @@ export function RsvpForm() {
                 setCompanions(Math.min(COMPANIONS_MAX, Math.max(0, Math.floor(parsed))));
               }}
               disabled={submitting}
-              aria-describedby="rsvp-companions-help"
+              aria-describedby={
+                fieldError?.field === "companions" ? "rsvp-companions-help" : undefined
+              }
             />
             <span className="stepper__unit" aria-hidden="true">
               {companions === 1 ? "pessoa" : "pessoas"}
@@ -229,11 +231,12 @@ export function RsvpForm() {
             <PlusIcon />
           </button>
         </div>
-        <span className="field__hint" id="rsvp-companions-help">
-          {fieldError?.field === "companions"
-            ? fieldError.message
-            : `Além de você. Até ${COMPANIONS_MAX} acompanhantes.`}
-        </span>
+        {fieldError?.field === "companions" ? (
+          <span className="field__error" id="rsvp-companions-help">
+            <AlertIcon />
+            {fieldError.message}
+          </span>
+        ) : null}
       </div>
 
       <div className={`field${fieldError?.field === "note" ? " field--invalid" : ""}`}>

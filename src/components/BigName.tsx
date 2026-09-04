@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const MAX_PX = 224; // teto: 14rem, para não estourar no desktop
+const MAX_PX = 288; // teto: 18rem, para não estourar no desktop
 const MIN_PX = 56;
-const FILL = 0.96; // margem de segurança nas laterais
+const FILL = 0.99; // margem de segurança nas laterais
 
 /**
  * O nome é o elemento mais forte da página, então ele ocupa toda a largura

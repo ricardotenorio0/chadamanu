@@ -62,6 +62,10 @@ const HERO_SPARKLES: SparkleSpot[] = [
   { x: "63%", y: "16%", size: "0.7rem", delay: "2.6s", duration: "6.5s", tone: "lilac" },
 ];
 
+/* Contato de quem desenvolveu o convite, no crédito do rodapé. */
+const DEV_WHATSAPP_URL =
+  "https://api.whatsapp.com/send/?phone=5511919203415&text&type=phone_number&app_absent=0";
+
 /* As fotos ficam publicadas na mesma origem do convite. */
 const PHOTOS: Photo[] = [
   {
@@ -103,8 +107,9 @@ export default function InvitePage() {
             </span>
 
             <h1 className="hero__title">
-              <span className="hero__title-line">Vem celebrar com a gente</span>
-              <span className="hero__title-line">o chá de bebê da</span>
+              <span className="hero__title-line">
+                Vem celebrar com a gente o chá de bebê da
+              </span>
               <span className="hero__name">
                 <BigName className="script" text={EVENT.babyName} />
                 <Swash className="hero__swash" />
@@ -417,6 +422,17 @@ export default function InvitePage() {
             <span className="site-footer__mark" aria-hidden="true">
               <HeartIcon />
             </span>
+
+            <a
+              className="site-footer__credit"
+              href={DEV_WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Desenvolvido por Ricardo Tenório
+              <span aria-hidden="true">|</span>
+              <span className="site-footer__credit-cta">Solicite um orçamento</span>
+            </a>
           </div>
         </footer>
       </main>
