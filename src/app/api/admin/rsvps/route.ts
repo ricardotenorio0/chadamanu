@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     const result = await listRsvps(options);
     return NextResponse.json({ ok: true, ...result });
   } catch (error) {
-    return handleRouteError(error);
+    return handleRouteError(error, { detailed: true });
   }
 }
 
@@ -58,6 +58,6 @@ export async function POST(request: NextRequest) {
     });
     return NextResponse.json({ ok: true, mode: result.mode, rsvp: result.rsvp }, { status: 201 });
   } catch (error) {
-    return handleRouteError(error);
+    return handleRouteError(error, { detailed: true });
   }
 }

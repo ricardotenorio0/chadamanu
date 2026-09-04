@@ -22,7 +22,7 @@ export async function GET(_request: NextRequest, context: Context) {
     if (!rsvp) return jsonError("Confirmação não encontrada.", 404);
     return NextResponse.json({ ok: true, rsvp });
   } catch (error) {
-    return handleRouteError(error);
+    return handleRouteError(error, { detailed: true });
   }
 }
 
@@ -81,7 +81,7 @@ export async function PATCH(request: NextRequest, context: Context) {
     if (isUniqueViolation(error)) {
       return jsonError("Já existe uma confirmação com esse nome.", 409, { field: "name" });
     }
-    return handleRouteError(error);
+    return handleRouteError(error, { detailed: true });
   }
 }
 
@@ -95,6 +95,6 @@ export async function DELETE(_request: NextRequest, context: Context) {
     if (!removed) return jsonError("Confirmação não encontrada.", 404);
     return NextResponse.json({ ok: true });
   } catch (error) {
-    return handleRouteError(error);
+    return handleRouteError(error, { detailed: true });
   }
 }
