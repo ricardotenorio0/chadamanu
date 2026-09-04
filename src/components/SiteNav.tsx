@@ -7,8 +7,9 @@ import { EVENT } from "@/lib/event";
 
 const LINKS = [
   { id: "contagem", label: "Contagem" },
+  { id: "album", label: "Fotos" },
   { id: "detalhes", label: "Detalhes" },
-  { id: "recado", label: "Recado" },
+  { id: "presente", label: "Presente" },
 ];
 
 /**

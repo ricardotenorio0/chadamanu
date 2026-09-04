@@ -10,9 +10,13 @@ Construído para rodar na **Vercel** com banco **Neon PostgreSQL**.
 sem framework de UI. Sem servidor persistente, sem Docker, sem processos em
 background: tudo roda em funções serverless.
 
-**Design:** identidade em rosa pastel e neutros quentes, cartões arredondados e
-tipografia dupla — *Kissing Season* para nomes e palavras-chave, *Sora* para
-toda a interface. Mobile first. Veja a seção 9.
+**Design:** identidade em rosa bebê, creme e off-white, cartões arredondados,
+enfeites discretos (borboletas, flores e balões) e tipografia dupla —
+*Kissing Season* para nomes e palavras-chave, *Sora* para toda a interface.
+Mobile first. Veja a seção 9.
+
+**Seções do convite:** abertura · contagem regressiva · álbum de fotos ·
+detalhes · recado · sugestão de presente · confirmação de presença.
 
 ---
 
@@ -220,6 +224,7 @@ migrations/            SQL versionado, aplicado por scripts/migrate.mjs
 scripts/migrate.mjs    Executor de migrations
 src/app/               Rotas (convite, /admin e /api)
 src/components/        Componentes do convite e do painel
+                       (BigName, Decor, PhotoWall, Ornaments, SiteNav…)
 src/lib/               Banco, autenticação, repositório e validações
 src/styles/            Estilos do convite e do painel
 public/fonts/          Local opcional da fonte decorativa (veja a seção 9)
@@ -237,6 +242,25 @@ pode ser trocada sem alterar código, pela variável `NEXT_PUBLIC_EVENT_DATE`.
 
 A duração usada no botão *Adicionar ao calendário* vem de `durationHours`, no
 mesmo arquivo — só o convite de agenda usa esse valor.
+
+### As fotos do álbum
+
+As três fotos do mural Polaroid são declaradas na constante `PHOTOS`, em
+`src/app/page.tsx`: endereço da imagem, texto alternativo, legenda manuscrita e
+inclinação. Para trocar uma foto, basta mudar o `src`; a moldura recorta
+qualquer proporção em um quadrado, então retrato e paisagem funcionam.
+
+As imagens são servidas direto da origem em que estão publicadas
+(`manu.cuptickers.online`) por uma tag `<img>` comum — sem passar pelo
+otimizador do Next, que precisaria alcançar aquele host durante o build.
+
+### Os enfeites
+
+Borboletas, flores, balões e raminhos são SVG em `src/components/Ornaments.tsx`.
+Cada seção declara os seus na própria `page.tsx`, com posição, tamanho, tom e
+atraso; o componente `Decor` faz a entrada quando a seção aparece na tela e
+mantém o movimento contínuo. Para tirar ou acrescentar um enfeite, mexa só
+nessa lista.
 
 ### Sistema de design
 

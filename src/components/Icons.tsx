@@ -122,6 +122,28 @@ export function CloseIcon({ className }: IconProps) {
   );
 }
 
+export function GiftIcon({ className }: IconProps) {
+  return (
+    <svg {...stroke} className={className}>
+      <path d="M4 11.5h16V19a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19v-7.5Z" />
+      <path d="M2.8 7.6h18.4v3.9H2.8z" />
+      <path d="M12 7.6v13.9" />
+      <path d="M12 7.6S10.8 3 8.4 3a2.3 2.3 0 0 0 0 4.6H12Zm0 0S13.2 3 15.6 3a2.3 2.3 0 0 1 0 4.6H12Z" />
+    </svg>
+  );
+}
+
+/** Fraldinha: desenhada com o mesmo traço dos outros ícones. */
+export function DiaperIcon({ className }: IconProps) {
+  return (
+    <svg {...stroke} className={className}>
+      <path d="M3.5 6.5h17v3.2c0 5.6-3.8 9.8-8.5 11.8-4.7-2-8.5-6.2-8.5-11.8V6.5Z" />
+      <path d="M3.5 9.8c2.9.7 5.7 1 8.5 1s5.6-.3 8.5-1" />
+      <path d="M12 10.8v3.4" />
+    </svg>
+  );
+}
+
 /** Brilho de quatro pontas — o único enfeite recorrente da identidade. */
 export function Sparkle({ className }: IconProps) {
   return (

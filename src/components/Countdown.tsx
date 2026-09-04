@@ -53,7 +53,7 @@ export function Countdown({ target }: { target: number }) {
 
       {arrived ? (
         <p className="countdown__note">
-          <span className="badge badge--on-dark">O grande dia chegou</span>
+          <span className="badge">O grande dia chegou</span>
         </p>
       ) : null}
     </div>

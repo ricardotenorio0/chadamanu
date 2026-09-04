@@ -48,9 +48,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://manu.cuptickers.online" crossOrigin="anonymous" />
       </head>
       <body>
-        {/* Sem JavaScript, o conteúdo continua visível. */}
+        {/* Sem JavaScript, tudo o que entra ao rolar já nasce visível. */}
         <noscript>
-          <style>{".reveal{opacity:1 !important;transform:none !important}"}</style>
+          <style>
+            {`.reveal{opacity:1!important;transform:none!important}
+              .polaroid{opacity:1!important;rotate:var(--rot)!important;scale:1!important;translate:none!important}
+              .photos__flower,.photos__butterfly{opacity:1!important}
+              .decor__item{opacity:var(--o,1)!important;transform:none!important}`}
+          </style>
         </noscript>
         {children}
       </body>
