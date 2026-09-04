@@ -1,0 +1,44 @@
+# Aplica as migrations pendentes no banco, sem precisar do código na máquina.
+#
+# Antes do primeiro uso, cadastre a string de conexão em
+#   Settings > Secrets and variables > Actions > New repository secret
+#   Nome: DATABASE_URL
+#
+# Depois: aba Actions > "Migrations do banco" > Run workflow.
+name: Migrations do banco
+
+on:
+  workflow_dispatch:
+    inputs:
+      apenas_status:
+        description: "Só listar o que já foi aplicado, sem alterar nada"
+        type: boolean
+        default: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Aplicar migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::error::Cadastre o secret DATABASE_URL em Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+          if [ "${{ inputs.apenas_status }}" = "true" ]; then
+            npm run db:status
+          else
+            npm run db:migrate
+            npm run db:status
+          fi

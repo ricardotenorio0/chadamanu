@@ -84,6 +84,25 @@ Para uma alteração futura, **crie um novo arquivo** (`0003_...sql`) em vez de
 editar um existente — o executor avisa se o conteúdo de uma migration já
 aplicada mudou.
 
+### Sem o código na máquina
+
+Duas alternativas ao `npm run db:migrate`, para quem só tem o repositório no
+GitHub e o banco no Neon:
+
+1. **SQL Editor do Neon.** Cole o conteúdo de `scripts/aplicar-no-neon.sql`
+   e clique em *Run*. Esse arquivo junta as duas migrations e já registra as
+   duas em `schema_migrations`, com o mesmo checksum que o executor calcula —
+   então um `db:migrate` futuro reconhece o banco como atualizado. Rodar duas
+   vezes não faz nada de novo.
+
+2. **GitHub Actions.** Cadastre a connection string em *Settings > Secrets and
+   variables > Actions*, com o nome `DATABASE_URL`, e rode o workflow
+   **Migrations do banco** pela aba *Actions*. Ele usa o executor de verdade,
+   então serve também para as próximas migrations.
+
+> O `scripts/aplicar-no-neon.sql` é gerado a partir das migrations. Ao criar
+> uma `0003_...sql`, ou refaça esse arquivo, ou prefira o workflow.
+
 ### Esquema da tabela `rsvps`
 
 | Coluna | Tipo | Observação |
